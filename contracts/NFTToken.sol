@@ -10,7 +10,6 @@ contract NFTToken is ERC721, Ownable {
     using Strings for uint256;
     using SafeMath for uint;
 
-    uint32 constant FIXED_BUYING_UNIT = 1;
     uint32 constant TOTAL_SUPPLY = 1000;
     
     string public baseURI;
@@ -37,15 +36,14 @@ contract NFTToken is ERC721, Ownable {
     /**
         @notice Mint token
         @dev uses _mint function
-        @param _receiverAddress address of user for whome to mint NFTs
     */
     function mint() external {
         require(tokenId < TOTAL_SUPPLY, "mint: Total supply reached");
         require(!isMinted[msg.sender], "mint: User already minted the NFT");
-        _mint(msg.sender, FIXED_BUYING_UNIT);
+        _mint(msg.sender, tokenId);
         isMinted[msg.sender] = true;
-        emit NFTMinted(_receiverAddress, tokenId);
         tokenId++;
+        emit NFTMinted(msg.sender, tokenId.sub(1));
     }
 
     function tokenURI(uint256 _tokenId)
