@@ -39,13 +39,13 @@ contract NFTToken is ERC721, Ownable {
         @dev uses _mint function
         @param _receiverAddress address of user for whome to mint NFTs
     */
-    function mint(address _receiverAddress) external {
+    function mint() external {
         require(tokenId < TOTAL_SUPPLY, "mint: Total supply reached");
         require(!isMinted[msg.sender], "mint: User already minted the NFT");
-        _mint(_receiverAddress, FIXED_BUYING_UNIT);
+        _mint(msg.sender, FIXED_BUYING_UNIT);
         isMinted[msg.sender] = true;
+        emit NFTMinted(_receiverAddress, tokenId);
         tokenId++;
-        emit NFTMinted(_receiverAddress, tokenId.sub(1));
     }
 
     function tokenURI(uint256 _tokenId)
